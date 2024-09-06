@@ -1,5 +1,5 @@
 import unittest
-from leafnode import LeafNode
+from htmlnode import LeafNode
 
 
 class TestHTMLNode(unittest.TestCase):
@@ -28,12 +28,13 @@ class TestHTMLNode(unittest.TestCase):
     def test_leafnode_missing_value(self):
         # Test LeafNode initialization without a value should raise ValueError
         with self.assertRaises(ValueError):
-            LeafNode(tag="p", value=None)
+            node = LeafNode(tag="p", value=None)
+            node.to_html()
 #test_leafnode_repr: Tests the __repr__ method to ensure it correctly represents the LeafNode object for debugging.
     def test_leafnode_repr(self):
         # Test __repr__ method
         node = LeafNode(tag="span", value="Example")
-        expected_repr = "HTMLNode(tag=span, value=Example, children=[], props={})"
+        expected_repr = "LeafNode(span, Example, {})"
         self.assertEqual(repr(node), expected_repr)
 #test_leafnode_value_only: Verifies that LeafNode with only a value and no tag behaves as expected.
     def test_leafnode_value_only(self):
