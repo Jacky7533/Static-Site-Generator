@@ -9,6 +9,7 @@ from textnode import (
     text_type_link,
     text_node_to_html_node,
 )
+from splitdelimiter import split_nodes_delimiter
 
 
 class TestTextNode(unittest.TestCase):
@@ -87,6 +88,39 @@ class TestTextNodeToHTMLNode(unittest.TestCase):
         html_node = text_node_to_html_node(node)
         self.assertEqual(html_node.tag, "b")
         self.assertEqual(html_node.value, "This is bold")
+
+class TestSplitDelimiter(unittest.TestCase):
+    def test_delimiter(self):
+        # Setup the input TextNode
+        node = TextNode("This is text with a `code block` word", "text")
+
+        # Call the function
+        new_nodes = split_nodes_delimiter([node], "`", "code")
+
+        # Expected output
+        expected_nodes = [
+            TextNode("This is text with a ", "text"),
+            TextNode("code block", "code"),
+            TextNode(" word", "text")
+        ]
+
+        # Use assertEqual to compare the results
+        self.assertEqual(new_nodes, expected_nodes)
+
+    # Test no delimiter Present
+    def test_no_delimiter_in_text(self):
+        node = TextNode("This is a regular text without delimiter", "text")
+        new_nodes = split_nodes_delimiter([node], "`", "code")
+        expected_nodes = [TextNode("This is a regular text without delimiter", "text")]
+        self.assertEqual(new_nodes, expected_nodes)
+
+    # Empty Text Node
+    def test_empty_text_node(self):
+        node = TextNode("", "text")
+        new_nodes = split_nodes_delimiter([node], "`", "code")
+        expected_nodes = [TextNode("", "text")]
+        self.assertEqual(new_nodes, expected_nodes)
+
 
 if __name__ == "__main__":
     unittest.main()
