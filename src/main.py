@@ -1,4 +1,5 @@
 from textnode import TextNode
+from generate_page import extract_title, generate_pages_recursive
 import os
 import shutil
 
@@ -35,13 +36,19 @@ def copy_directory(src, dst):
 
 
 def main():
-    # Example usage:
-    source_directory = '/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/static'
-    destination_directory = '/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/public'
-    
-    node = TextNode("This is a text node", "bold", "https://www.boot.dev")
-    copy_directory(source_directory, destination_directory)
-    print(node)
+    # Define your paths
+    content_dir = '/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/content'
+    template_html = '/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/template.html'
+    public_dir = '/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/public'
 
+    # Step 1: Clear the public directory
+    clear_directory(public_dir)
 
-main()
+    # Step 2: Copy static files to the public directory
+    copy_directory('/home/jacky/workspace/github.com/Jacky7533/Static-Site-Generator/static', public_dir)
+
+    # Step 3: Generate pages for all markdown files in the content directory
+    generate_pages_recursive(content_dir, template_html, public_dir)
+
+if __name__ == '__main__':
+    main()
